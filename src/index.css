@@ -1,0 +1,126 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-cream text-ink-900 font-sans antialiased;
+    background-color: #faf9f7;
+  }
+
+  ::selection {
+    @apply bg-ink-900 text-cream;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-ink-100;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-ink-400 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-ink-600;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-ink-950 text-white font-medium text-sm tracking-wide rounded-full transition-all duration-200 hover:bg-ink-800 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 border border-ink-900 text-ink-900 font-medium text-sm tracking-wide rounded-full transition-all duration-200 hover:bg-ink-950 hover:text-white active:scale-95;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-ink-600 font-medium text-sm transition-all duration-200 hover:text-ink-950 hover:bg-ink-100 rounded-lg;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl overflow-hidden shadow-sm border border-ink-100;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 bg-ink-50 border border-ink-200 rounded-xl text-ink-900 placeholder-ink-400 font-sans text-sm transition-all duration-200 focus:outline-none focus:border-ink-600 focus:bg-white focus:ring-2 focus:ring-ink-200;
+  }
+
+  .section-title {
+    @apply font-display text-4xl md:text-5xl font-semibold text-ink-950 leading-tight;
+  }
+
+  .skeleton {
+    @apply animate-pulse bg-gradient-to-r from-ink-100 via-ink-50 to-ink-100 rounded-xl;
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite linear;
+  }
+
+  .tag {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-ink-100 text-ink-700;
+  }
+
+  .badge-sale {
+    @apply absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full z-10;
+  }
+
+  .nav-link {
+    @apply text-sm font-medium text-ink-600 hover:text-ink-950 transition-colors duration-200;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .glass {
+    backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(250, 249, 247, 0.85);
+  }
+
+  .glass-dark {
+    backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(13, 13, 18, 0.8);
+  }
+}
+
+/* Shimmer animation for skeleton loaders */
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+/* Smooth page transitions */
+.page-enter {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
