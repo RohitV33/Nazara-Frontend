@@ -425,7 +425,7 @@ export default function AuthPage() {
                 {/* Google Login Button */}
                 <button
                   onClick={() =>
-                    window.location.href = "http://localhost:5000/auth/google"
+                    window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`
                   }
                   className="w-full border border-gray-300 py-3 rounded-xl flex items-center justify-center gap-3 hover:bg-gray-50 transition"
                 >
