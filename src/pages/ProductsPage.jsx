@@ -16,7 +16,7 @@ const SORT_OPTIONS = [
   { value: 'popular', label: 'Most Popular' },
 ];
 
-export default function ProductsPage() {
+export default function ProductsPage({ onProductsLoad }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -44,6 +44,7 @@ export default function ProductsPage() {
       const { data } = await api.get(`/products?${params}`);
       setProducts(data.products);
       setPagination(data.pagination);
+      if (onProductsLoad) onProductsLoad(data.products);
     } catch (err) {
       console.error(err);
     } finally {

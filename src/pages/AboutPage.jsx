@@ -2,13 +2,6 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Heart, Leaf, Shield, Star } from 'lucide-react';
 
-const team = [
-  { name: 'Aryan Mehta', role: 'Founder & CEO', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format' },
-  { name: 'Priya Sharma', role: 'Head of Design', img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&auto=format' },
-  { name: 'Rohit Verma', role: 'Tech Lead', img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&auto=format' },
-  { name: 'Neha Gupta', role: 'Head of Curation', img: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&auto=format' },
-];
-
 const values = [
   { icon: Star, title: 'Quality First', desc: 'Every product is hand-picked and tested to meet our high standards before it reaches you.' },
   { icon: Heart, title: 'Customer Love', desc: 'We obsess over customer experience. Your satisfaction is the only metric that truly matters.' },
@@ -109,28 +102,6 @@ export default function AboutPage() {
               <p className="text-sm text-ink-500 leading-relaxed">{v.desc}</p>
             </motion.div>
           ))}
-        </div>
-      </section>
-
-      {/* Team */}
-      <section className="bg-ink-50 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <span className="text-xs text-gold-600 font-medium tracking-widest uppercase">The People</span>
-            <h2 className="section-title mt-2">Meet the Team</h2>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {team.map((member, i) => (
-              <motion.div key={member.name} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="text-center">
-                <div className="w-24 h-24 rounded-full overflow-hidden mx-auto mb-3 border-4 border-white shadow-md">
-                  <img src={member.img} alt={member.name} className="w-full h-full object-cover" />
-                </div>
-                <p className="font-semibold text-ink-950 text-sm">{member.name}</p>
-                <p className="text-xs text-ink-400 mt-0.5">{member.role}</p>
-              </motion.div>
-            ))}
-          </div>
         </div>
       </section>
 

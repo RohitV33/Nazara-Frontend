@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
+import { ThemeProvider, useTheme } from './context/ThemeContext';
 
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
@@ -35,15 +37,18 @@ function AdminRoute({ children }) {
 }
 
 function AppRoutes() {
+  const [products, setProducts] = useState([]);
+  const { darkMode } = useTheme();
+
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className={`min-h-screen flex flex-col ${darkMode ? 'bg-ink-950 text-ink-50' : 'bg-cream text-ink-900'} transition-colors duration-300`}>
       <ScrollToTop />
       <PageLoader />
-      <Navbar />
+      <Navbar products={products} />
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/products" element={<ProductsPage />} />
+          <Route path="/products" element={<ProductsPage onProductsLoad={setProducts} />} />
           <Route path="/products/:id" element={<ProductDetailPage />} />
           <Route path="/cart" element={<ProtectedRoute><CartPage /></ProtectedRoute>} />
           <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
@@ -68,26 +73,37 @@ function AppRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <CartProvider>
-          <AppRoutes />
-          <Toaster
-            position="bottom-right"
-            toastOptions={{
-              style: {
-                background: '#0d0d12',
-                color: '#faf9f7',
-                fontFamily: 'Outfit, sans-serif',
-                fontSize: '14px',
-                borderRadius: '12px',
-                padding: '12px 16px',
-              },
-              success: { iconTheme: { primary: '#c4a45a', secondary: '#0d0d12' } },
-              error: { iconTheme: { primary: '#ef4444', secondary: '#faf9f7' } },
-            }}
-          />
-        </CartProvider>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <CartProvider>
+            <AppRoutes />
+            <ToasterWithTheme />
+          </CartProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </BrowserRouter>
+  );
+}
+
+// Toaster changes color based on theme
+function ToasterWithTheme() {
+  const { darkMode } = useTheme();
+  return (
+    <Toaster
+      position="bottom-right"
+      toastOptions={{
+        style: {
+          background: darkMode ? '#1a1a24' : '#0d0d12',
+          color: darkMode ? '#f7f7f8' : '#faf9f7',
+          fontFamily: 'Outfit, sans-serif',
+          fontSize: '14px',
+          borderRadius: '12px',
+          padding: '12px 16px',
+          border: darkMode ? '1px solid #2a2a38' : 'none',
+        },
+        success: { iconTheme: { primary: '#c4a45a', secondary: darkMode ? '#1a1a24' : '#0d0d12' } },
+        error: { iconTheme: { primary: '#ef4444', secondary: darkMode ? '#1a1a24' : '#faf9f7' } },
+      }}
+    />
   );
 }

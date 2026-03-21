@@ -56,7 +56,7 @@ function RevenueChart({ data }) {
         {data.map((d, i) => {
           const height = Math.max((parseFloat(d.revenue || 0) / maxRevenue) * 85, 4);
           const date = new Date(d.date);
-          const label = date.toLocaleDateString('en-US', { weekday: 'short' });
+          const label = date.toLocaleDateString('en-IN', { weekday: 'short' });
           return (
             <motion.div
               key={d.date}
@@ -67,7 +67,7 @@ function RevenueChart({ data }) {
             >
               {/* Tooltip */}
               <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-ink-950 text-white text-xs rounded-lg px-2.5 py-1.5 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
-                <p className="font-medium">${parseFloat(d.revenue).toFixed(2)}</p>
+                <p className="font-medium">{formatPrice(parseFloat(d.revenue))}</p>
                 <p className="text-ink-400">{d.orders} orders</p>
               </div>
               <div className="w-full bg-ink-700 rounded-t-xl hover:bg-gold-500 transition-all duration-200 cursor-default" style={{ height: '100%' }} />
@@ -110,8 +110,8 @@ function TopProductsChart({ products }) {
               />
             </div>
           </div>
-          <span className="text-xs font-semibold text-ink-700 w-20 text-right">
-            ${parseFloat(p.total_revenue).toFixed(0)}
+          <span className="text-xs font-semibold text-ink-700 w-24 text-right">
+            {formatPrice(parseFloat(p.total_revenue))}
           </span>
         </motion.div>
       ))}
@@ -189,12 +189,12 @@ function ProductModal({ product, categories, onClose, onSave }) {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="text-xs font-medium text-ink-600 mb-1.5 block">Price *</label>
-              <input type="number" step="0.01" className="input-field" placeholder="29.99"
+              <input type="number" step="0.01" className="input-field" placeholder="299"
                 value={form.price} onChange={e => setForm({...form, price: e.target.value})} required />
             </div>
             <div>
               <label className="text-xs font-medium text-ink-600 mb-1.5 block">Original Price</label>
-              <input type="number" step="0.01" className="input-field" placeholder="39.99"
+              <input type="number" step="0.01" className="input-field" placeholder="399"
                 value={form.original_price} onChange={e => setForm({...form, original_price: e.target.value})} />
             </div>
           </div>
@@ -262,12 +262,11 @@ export default function AdminDashboard() {
   const [productSearch, setProductSearch] = useState('');
 
   const STATUS_COLORS = {
-    pending:    'bg-yellow-50 text-yellow-700',
-    confirmed:  'bg-blue-50 text-blue-700',
-    processing: 'bg-purple-50 text-purple-700',
-    shipped:    'bg-indigo-50 text-indigo-700',
-    delivered:  'bg-green-50 text-green-700',
-    cancelled:  'bg-red-50 text-red-700',
+    pending:          'bg-yellow-50 text-yellow-700',
+    dispatched:       'bg-blue-50 text-blue-700',
+    out_for_delivery: 'bg-purple-50 text-purple-700',
+    delivered:        'bg-green-50 text-green-700',
+    cancelled:        'bg-red-50 text-red-700',
   };
 
   const fetchData = async () => {
@@ -285,7 +284,6 @@ export default function AdminDashboard() {
       setOrders(ordersRes.data);
       setCategories(catsRes.data);
 
-      // Top products from order items
       try {
         const topRes = await api.get('/orders/admin/top-products');
         setTopProducts(topRes.data);
@@ -299,7 +297,6 @@ export default function AdminDashboard() {
 
   useEffect(() => { fetchData(); }, []);
 
-  // Product search filter
   useEffect(() => {
     if (!productSearch.trim()) {
       setFilteredProducts(products);
@@ -391,7 +388,7 @@ export default function AdminDashboard() {
                     <div className="flex items-center justify-between mb-1">
                       <h3 className="font-semibold text-ink-950">Revenue — Last 7 Days</h3>
                       <span className="text-xs text-ink-400 bg-ink-50 px-2.5 py-1 rounded-full">
-                        ${(stats?.dailyRevenue || []).reduce((s, d) => s + parseFloat(d.revenue || 0), 0).toFixed(2)} total
+                        {formatPrice((stats?.dailyRevenue || []).reduce((s, d) => s + parseFloat(d.revenue || 0), 0))} total
                       </span>
                     </div>
                     <RevenueChart data={stats?.dailyRevenue || []} />
@@ -407,16 +404,18 @@ export default function AdminDashboard() {
                       });
                       const total = Object.values(statusCount).reduce((a, b) => a + b, 0) || 1;
                       const colors = {
-                        pending: 'bg-yellow-400', confirmed: 'bg-blue-400',
-                        processing: 'bg-purple-400', shipped: 'bg-indigo-400',
-                        delivered: 'bg-green-400', cancelled: 'bg-red-400',
+                        pending:          'bg-yellow-400',
+                        dispatched:       'bg-blue-400',
+                        out_for_delivery: 'bg-purple-400',
+                        delivered:        'bg-green-400',
+                        cancelled:        'bg-red-400',
                       };
                       return (
                         <div className="space-y-3">
                           {Object.entries(statusCount).map(([status, count]) => (
                             <div key={status} className="flex items-center gap-2">
                               <div className={`w-2.5 h-2.5 rounded-full ${colors[status] || 'bg-ink-400'}`} />
-                              <span className="text-sm text-ink-700 capitalize flex-1">{status}</span>
+                              <span className="text-sm text-ink-700 capitalize flex-1">{status.replace(/_/g, ' ')}</span>
                               <span className="text-sm font-semibold text-ink-950">{count}</span>
                               <div className="w-20 h-1.5 bg-ink-100 rounded-full overflow-hidden">
                                 <motion.div
@@ -460,13 +459,13 @@ export default function AdminDashboard() {
                               <div className="font-medium text-ink-900">{order.name}</div>
                               <div className="text-xs text-ink-400">{order.email}</div>
                             </td>
-                            <td className="py-3 font-semibold">${Number(order.total_amount).toFixed(2)}</td>
+                            <td className="py-3 font-semibold">{formatPrice(order.total_amount)}</td>
                             <td className="py-3">
                               <span className={`px-2.5 py-1 rounded-full text-xs font-medium capitalize ${STATUS_COLORS[order.status] || 'bg-ink-50 text-ink-700'}`}>
-                                {order.status}
+                                {order.status?.replace(/_/g, ' ')}
                               </span>
                             </td>
-                            <td className="py-3 text-ink-400">{new Date(order.created_at).toLocaleDateString()}</td>
+                            <td className="py-3 text-ink-400">{new Date(order.created_at).toLocaleDateString('en-IN')}</td>
                           </tr>
                         ))}
                         {(!stats?.recentOrders || stats.recentOrders.length === 0) && (
@@ -482,7 +481,6 @@ export default function AdminDashboard() {
             {/* ── PRODUCTS TAB ── */}
             {activeTab === 1 && (
               <div className="space-y-4">
-                {/* Search */}
                 <div className="card p-3 flex items-center gap-3">
                   <input
                     type="text"
@@ -523,7 +521,7 @@ export default function AdminDashboard() {
                               </div>
                             </td>
                             <td className="px-5 py-3 text-ink-500 text-xs">{p.category_name || '—'}</td>
-                            <td className="px-5 py-3 font-semibold">${Number(p.price).toFixed(2)}</td>
+                            <td className="px-5 py-3 font-semibold">{formatPrice(p.price)}</td>
                             <td className="px-5 py-3">
                               <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
                                 p.stock === 0 ? 'bg-red-50 text-red-600'
@@ -578,20 +576,20 @@ export default function AdminDashboard() {
                             <div className="font-medium text-ink-900">{order.user_name}</div>
                             <div className="text-xs text-ink-400">{order.user_email}</div>
                           </td>
-                          <td className="px-5 py-3 font-semibold">${Number(order.total_amount).toFixed(2)}</td>
+                          <td className="px-5 py-3 font-semibold">{formatPrice(order.total_amount)}</td>
                           <td className="px-5 py-3">
                             <select
                               value={order.status}
                               onChange={(e) => handleStatusChange(order.id, e.target.value)}
                               className={`text-xs font-medium px-2.5 py-1.5 rounded-lg border-0 cursor-pointer focus:outline-none capitalize ${STATUS_COLORS[order.status] || 'bg-ink-50 text-ink-700'}`}
                             >
-                              {['pending','confirmed','processing','shipped','delivered','cancelled'].map(s => (
-                                <option key={s} value={s}>{s}</option>
+                              {['pending','dispatched','out_for_delivery','delivered','cancelled'].map(s => (
+                                <option key={s} value={s}>{s.replace(/_/g, ' ')}</option>
                               ))}
                             </select>
                           </td>
                           <td className="px-5 py-3 text-ink-400">
-                            {new Date(order.created_at).toLocaleDateString()}
+                            {new Date(order.created_at).toLocaleDateString('en-IN')}
                           </td>
                         </tr>
                       ))}
