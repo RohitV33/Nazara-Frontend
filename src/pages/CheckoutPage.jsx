@@ -269,7 +269,7 @@ export default function CheckoutPage() {
             </div>
     )}
 
-          {/* ── Step 1 — Payment ── */}
+        
           {step === 1 && (
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="card p-6">
               <div className="flex items-center gap-3 mb-6">
@@ -277,7 +277,7 @@ export default function CheckoutPage() {
                 <h2 className="font-semibold text-lg">Payment</h2>
               </div>
 
-              {/* Address summary */}
+         
               {(() => {
                 const addr = getActiveAddress();
                 return addr ? (

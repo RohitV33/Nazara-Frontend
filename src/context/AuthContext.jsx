@@ -24,7 +24,7 @@ export function AuthProvider({ children }) {
       return { success: true, user: data.user };
     } catch (err) {
       const msg = err.response?.data?.message || 'Login failed';
-      // Handle unverified email
+     
       if (err.response?.data?.requiresOTP) {
         return {
           success: false,

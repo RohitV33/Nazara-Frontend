@@ -17,13 +17,12 @@
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
-  /* ── Dark mode: html.dark pe lagta hai ── */
   html.dark body {
     background-color: #0d0d12 !important;
     color: #f7f7f8 !important;
   }
 
-  /* ── Global dark mode text overrides ── */
+  
   html.dark h1,
   html.dark h2,
   html.dark h3,
@@ -45,7 +44,6 @@
     color: #d9d9de;
   }
 
-  /* ── Dark mode background overrides ── */
   html.dark .bg-white {
     background-color: #1a1a24 !important;
   }
@@ -72,7 +70,7 @@
     background-color: #2a2a38 !important;
   }
 
-  /* ── Dark mode text color overrides ── */
+
   html.dark .text-ink-900,
   html.dark .text-ink-950 {
     color: #f7f7f8 !important;
@@ -109,7 +107,7 @@
     color: #9090a0 !important;
   }
 
-  /* ── Dark mode border overrides ── */
+  
   html.dark .border-ink-100 {
     border-color: #2a2a38 !important;
   }
@@ -123,7 +121,7 @@
     border-color: #2a2a38 !important;
   }
 
-  /* ── Dark mode card / panel ── */
+  
   html.dark .card,
   html.dark [class*="rounded-2xl"],
   html.dark [class*="rounded-xl"] {
@@ -131,7 +129,7 @@
     border-color: #2a2a38;
   }
 
-  /* ── Exception: keep colored backgrounds ── */
+
   html.dark [class*="bg-red-"],
   html.dark [class*="bg-green-"],
   html.dark [class*="bg-blue-"],
@@ -139,10 +137,10 @@
   html.dark [class*="bg-purple-"],
   html.dark [class*="bg-gold-"],
   html.dark [class*="bg-ink-950"] {
-    /* keep as-is — colored badges, buttons stay colored */
+   
   }
 
-  /* ── Input fields in dark mode ── */
+  
   html.dark input,
   html.dark textarea,
   html.dark select {

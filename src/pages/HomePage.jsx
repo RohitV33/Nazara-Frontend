@@ -6,7 +6,7 @@ import api from '../utils/api';
 import ProductCard from '../components/product/ProductCard';
 import { ProductCardSkeleton } from '../components/common/Skeletons';
 
-// ---------- Parallax Hero ----------
+
 function HeroSection() {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
@@ -93,7 +93,7 @@ function HeroSection() {
   );
 }
 
-// ---------- Category Strip ----------
+
 function CategorySection() {
   const categories = [
     { name: 'Electronics', slug: 'electronics', img: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?w=600&auto=format' },
@@ -147,7 +147,7 @@ function CategorySection() {
   );
 }
 
-// ---------- Features Bar ----------
+
 function FeaturesBar() {
   const features = [
     { icon: Truck, title: 'Free Shipping', desc: 'On orders over $100' },
@@ -184,7 +184,7 @@ function FeaturesBar() {
   );
 }
 
-// ---------- Marquee Banner ----------
+
 function MarqueeBanner() {
   const items = ['New Arrivals', 'Free Shipping Over ₹5000', 'Premium Quality', 'Curated Selection', 'Secure Payments', 'Easy Returns'];
   return (
@@ -205,7 +205,7 @@ function MarqueeBanner() {
   );
 }
 
-// ---------- Main Page ----------
+
 export default function HomePage() {
   const [featured, setFeatured] = useState([]);
   const [loadingFeatured, setLoadingFeatured] = useState(true);

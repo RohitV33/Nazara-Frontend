@@ -1,10 +1,3 @@
-/**
- * ThemeContext.jsx
- * Path: frontend/src/context/ThemeContext.jsx
- *
- * Manages dark/light mode.
- * Adds `dark` class to <html> tag so CSS selectors `html.dark` work globally.
- */
 
 import { createContext, useContext, useState, useEffect } from "react";
 
@@ -18,7 +11,7 @@ export function ThemeProvider({ children }) {
   });
 
   useEffect(() => {
-    const root = document.documentElement; // <html> tag
+    const root = document.documentElement; 
     if (darkMode) {
       root.classList.add("dark");
     } else {

@@ -30,7 +30,7 @@ const CANCEL_REASONS = [
   "Other reason",
 ];
 
-// ─── Cancel Modal ─────────────────────────────────────────────────────────────
+
 function CancelModal({ order, onClose, onCancelled }) {
   const [selectedReason, setSelectedReason] = useState('');
   const [otherReason, setOtherReason] = useState('');
@@ -134,7 +134,7 @@ function CancelModal({ order, onClose, onCancelled }) {
   );
 }
 
-// ─── Order Timeline ───────────────────────────────────────────────────────────
+
 function OrderTimeline({ status }) {
   if (status === 'cancelled') return null;
   const current = STATUS_STEPS.indexOf(status);
@@ -159,7 +159,7 @@ function OrderTimeline({ status }) {
   );
 }
 
-// ─── Order Card ───────────────────────────────────────────────────────────────
+
 function OrderCard({ order, index, onCancelled }) {
   const [expanded, setExpanded] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
@@ -289,7 +289,7 @@ function OrderCard({ order, index, onCancelled }) {
   );
 }
 
-// ─── Main Page ────────────────────────────────────────────────────────────────
+
 export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);

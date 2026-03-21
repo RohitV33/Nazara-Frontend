@@ -1,20 +1,13 @@
-/**
- * api.js — Centralized Axios API client
- * Path: frontend/src/utils/api.js
- *
- * Includes: auth, products (with search), orders, cart
- */
-
 import axios from "axios";
 
-// ─── Base Config ──────────────────────────────────────────────────────────────
+
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "/api",
   timeout: 15000,
   headers: { "Content-Type": "application/json" },
 });
 
-// ─── Request Interceptor — attach JWT ─────────────────────────────────────────
+
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -26,7 +19,7 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// ─── Response Interceptor — handle 401 ───────────────────────────────────────
+
 api.interceptors.response.use(
   (res) => res,
   (error) => {
@@ -38,9 +31,7 @@ api.interceptors.response.use(
   }
 );
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// PRODUCT APIs
-// ═══════════════════════════════════════════════════════════════════════════════
+
 export const productAPI = {
   /**
    * Get all products with optional filters + search
@@ -51,22 +42,17 @@ export const productAPI = {
 
   getById: (id) => api.get(`/products/${id}`),
 
-  // Admin
+
   create: (data) => api.post("/products", data),
   update: (id, data) => api.put(`/products/${id}`, data),
   delete: (id) => api.delete(`/products/${id}`),
 
-  /**
-   * Search suggestions endpoint (returns lightweight results fast)
-   * Backend should return: [{ _id, name, image, category }]
-   */
+  
   getSuggestions: (query, mode = "smart") =>
     api.get("/products/suggestions", { params: { q: query, mode } }),
 };
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// ORDER APIs
-// ═══════════════════════════════════════════════════════════════════════════════
+
 export const orderAPI = {
   create: (orderData) => api.post("/orders", orderData),
 
@@ -87,9 +73,7 @@ export const orderAPI = {
   updateStatus: (id, status) => api.put(`/orders/${id}/status`, { status }),
 };
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// AUTH APIs
-// ═══════════════════════════════════════════════════════════════════════════════
+
 export const authAPI = {
   login: (data) => api.post("/auth/login", data),
   register: (data) => api.post("/auth/register", data),
@@ -98,9 +82,7 @@ export const authAPI = {
   logout: () => api.post("/auth/logout"),
 };
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// CART APIs
-// ═══════════════════════════════════════════════════════════════════════════════
+
 export const cartAPI = {
   get: () => api.get("/cart"),
   add: (item) => api.post("/cart", item),

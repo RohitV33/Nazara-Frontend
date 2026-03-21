@@ -1,28 +1,15 @@
-/**
- * useSearch.js — Smart Search Hook
- * Path: frontend/src/hooks/useSearch.js
- *
- * Features:
- * - Live suggestions while typing
- * - Per-user search history (localStorage)
- * - Fuzzy / spell-correction using Fuse.js
- * - Dual mode: normal | smart
- *
- * Install dependency: npm install fuse.js
- */
-
 import { useState, useEffect, useRef, useCallback } from "react";
 import Fuse from "fuse.js";
 
-// ─── Constants ────────────────────────────────────────────────────────────────
+
 const HISTORY_KEY = "luxe_search_history";
 const MAX_HISTORY = 8;
 const DEBOUNCE_MS = 300;
 
-// ─── Fuse.js config for fuzzy search ─────────────────────────────────────────
+
 const FUSE_OPTIONS = {
   includeScore: true,
-  threshold: 0.45,        // 0 = exact, 1 = match anything
+  threshold: 0.45,      
   minMatchCharLength: 2,
   keys: [
     { name: "name", weight: 0.6 },
@@ -31,7 +18,7 @@ const FUSE_OPTIONS = {
   ],
 };
 
-// ─── LocalStorage helpers ─────────────────────────────────────────────────────
+
 function loadHistory(userId) {
   try {
     const raw = localStorage.getItem(`${HISTORY_KEY}_${userId || "guest"}`);
@@ -48,18 +35,18 @@ function saveHistory(userId, history) {
       JSON.stringify(history)
     );
   } catch {
-    // storage full — ignore
+   
   }
 }
 
-// ─── Main Hook ────────────────────────────────────────────────────────────────
+
 /**
- * @param {Array}  products  - full product list to search/suggest from
- * @param {string} userId    - current user id (for per-user history)
+ * @param {Array}  products 
+ * @param {string} userId    
  */
 export function useSearch(products = [], userId = null) {
   const [query, setQuery] = useState("");
-  const [mode, setMode] = useState("smart"); // "normal" | "smart"
+  const [mode, setMode] = useState("smart"); 
   const [suggestions, setSuggestions] = useState([]);
   const [history, setHistory] = useState(() => loadHistory(userId));
   const [isOpen, setIsOpen] = useState(false);
@@ -67,14 +54,14 @@ export function useSearch(products = [], userId = null) {
   const fuseRef = useRef(null);
   const debounceRef = useRef(null);
 
-  // Re-build Fuse index when products change
+ 
   useEffect(() => {
     if (products.length > 0) {
       fuseRef.current = new Fuse(products, FUSE_OPTIONS);
     }
   }, [products]);
 
-  // ── Compute suggestions ──────────────────────────────────────────────────
+  
   const computeSuggestions = useCallback(
     (value) => {
       if (!value || value.trim().length < 2) {
@@ -83,7 +70,7 @@ export function useSearch(products = [], userId = null) {
       }
 
       if (mode === "smart" && fuseRef.current) {
-        // Fuzzy search — handles typos, partial matches
+    
         const results = fuseRef.current
           .search(value)
           .slice(0, 6)
@@ -94,7 +81,7 @@ export function useSearch(products = [], userId = null) {
           }));
         setSuggestions(results);
       } else {
-        // Normal exact/partial match
+  
         const lower = value.toLowerCase();
         const results = products
           .filter(
@@ -110,7 +97,7 @@ export function useSearch(products = [], userId = null) {
     [products, mode]
   );
 
-  // ── Debounced query handler ───────────────────────────────────────────────
+
   const handleQueryChange = useCallback(
     (value) => {
       setQuery(value);
@@ -124,13 +111,13 @@ export function useSearch(products = [], userId = null) {
     [computeSuggestions]
   );
 
-  // ── Submit search (save to history) ──────────────────────────────────────
+
   const submitSearch = useCallback(
     (value = query) => {
       const trimmed = value.trim();
       if (!trimmed) return;
 
-      // Add to history (deduplicate, newest first)
+  
       const updated = [
         trimmed,
         ...history.filter((h) => h.toLowerCase() !== trimmed.toLowerCase()),
@@ -143,7 +130,7 @@ export function useSearch(products = [], userId = null) {
     [query, history, userId]
   );
 
-  // ── Select a suggestion ───────────────────────────────────────────────────
+
   const selectSuggestion = useCallback(
     (product) => {
       setQuery(product.name);
@@ -155,7 +142,7 @@ export function useSearch(products = [], userId = null) {
     [submitSearch]
   );
 
-  // ── Select from history ────────────────────────────────────────────────────
+  
   const selectHistory = useCallback(
     (term) => {
       setQuery(term);
@@ -165,7 +152,7 @@ export function useSearch(products = [], userId = null) {
     [computeSuggestions]
   );
 
-  // ── Remove one history item ───────────────────────────────────────────────
+ 
   const removeHistoryItem = useCallback(
     (term) => {
       const updated = history.filter((h) => h !== term);
@@ -175,19 +162,19 @@ export function useSearch(products = [], userId = null) {
     [history, userId]
   );
 
-  // ── Clear all history ─────────────────────────────────────────────────────
+ 
   const clearHistory = useCallback(() => {
     setHistory([]);
     saveHistory(userId, []);
   }, [userId]);
 
-  // ── Close dropdown ────────────────────────────────────────────────────────
+
   const closeDropdown = useCallback(() => {
     setIsOpen(false);
     setSuggestions([]);
   }, []);
 
-  // Cleanup debounce on unmount
+ 
   useEffect(() => () => clearTimeout(debounceRef.current), []);
 
   return {

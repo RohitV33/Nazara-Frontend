@@ -11,7 +11,7 @@ import toast from 'react-hot-toast';
 
 const TABS = ['Overview', 'Products', 'Orders'];
 
-// ─── Stat Card ───────────────────────────────────────────────────────────────
+//Stat Card 
 function StatCard({ icon: Icon, label, value, color, sub, trend, index }) {
   return (
     <motion.div
@@ -38,7 +38,7 @@ function StatCard({ icon: Icon, label, value, color, sub, trend, index }) {
   );
 }
 
-// ─── Revenue Chart ────────────────────────────────────────────────────────────
+//Revenue Chart 
 function RevenueChart({ data }) {
   if (!data || data.length === 0) {
     return (
@@ -80,7 +80,7 @@ function RevenueChart({ data }) {
   );
 }
 
-// ─── Top Products Chart ───────────────────────────────────────────────────────
+//Top Products Chart
 function TopProductsChart({ products }) {
   if (!products || products.length === 0) return null;
   const max = Math.max(...products.map(p => p.total_sold || 0), 1);
@@ -119,7 +119,7 @@ function TopProductsChart({ products }) {
   );
 }
 
-// ─── Product Modal ─────────────────────────────────────────────────────────────
+//Product Modal 
 function ProductModal({ product, categories, onClose, onSave }) {
   const isEdit = !!product?.id;
   const [form, setForm] = useState({
@@ -247,7 +247,7 @@ function ProductModal({ product, categories, onClose, onSave }) {
   );
 }
 
-// ─── Main Dashboard ───────────────────────────────────────────────────────────
+//Main Dashboard 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState(0);
   const [stats, setStats] = useState(null);

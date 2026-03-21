@@ -10,7 +10,6 @@ import api from '../utils/api';
 import toast from 'react-hot-toast';
 import AddressForm from '../components/common/AddressForm';
 
-// ─── Address Modal wrapper ────────────────────────────────────────────────────
 function AddressModal({ address, onClose, onSave }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -41,7 +40,7 @@ function AddressModal({ address, onClose, onSave }) {
   );
 }
 
-// ─── Main ProfilePage ─────────────────────────────────────────────────────────
+
 export default function ProfilePage() {
   const { user, logout } = useAuth();
   const [activeTab, setActiveTab] = useState('profile');

@@ -85,7 +85,7 @@ export default function App() {
   );
 }
 
-// Toaster changes color based on theme
+
 function ToasterWithTheme() {
   const { darkMode } = useTheme();
   return (

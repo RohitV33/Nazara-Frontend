@@ -6,7 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import api from '../utils/api';
 import toast from 'react-hot-toast';
 
-// ── OTP Input ─────────────────────────────────────────────────────────────────
+
 function OTPInput({ value, onChange }) {
   const inputs = useRef([]);
   const digits = Array(6).fill('').map((_, i) => value[i] || '');
@@ -66,7 +66,7 @@ function OTPInput({ value, onChange }) {
   );
 }
 
-// ── OTP Screen (register verify) ──────────────────────────────────────────────
+
 function OTPScreen({ email, onSuccess, onBack }) {
   const [otp, setOtp] = useState('');
   const [loading, setLoading] = useState(false);
@@ -134,9 +134,9 @@ function OTPScreen({ email, onSuccess, onBack }) {
   );
 }
 
-// ── Forgot Password Flow ──────────────────────────────────────────────────────
+
 function ForgotPasswordFlow({ onBack }) {
-  const [step, setStep] = useState('email'); // email → otp → newpass → done
+  const [step, setStep] = useState('email'); 
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
   const [newPass, setNewPass] = useState('');
