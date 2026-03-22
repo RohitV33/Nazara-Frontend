@@ -76,7 +76,7 @@ export default function ProductCard({ product, index = 0 }) {
             <div className="flex items-baseline gap-2">
               <span className="text-lg font-semibold text-ink-950">{formatPrice(product.price)}</span>
               {product.original_price && (
-                <span className="text-sm text-ink-400 line-through">₹{Number(product.original_price).toFixed(2)}</span>
+                <span className="text-sm text-ink-400 line-through">{formatPrice(product.original_price)}</span>
               )}
             </div>
 
